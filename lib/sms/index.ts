@@ -31,7 +31,7 @@ export async function sendQuoteSMS(
   }
 
   const normalizedPhone = normalizePhone(phone)
-  const quoteUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bergn.dk'}/q/${quote.quote_uuid}`
+  const quoteUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://bergn.dk'}/q/${quote.quote_uuid}`
 
   // Byg SMS-tekst
   const senderName = settings['sms_sender_name'] || 'Bergn'

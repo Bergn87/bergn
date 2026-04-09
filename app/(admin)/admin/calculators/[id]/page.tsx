@@ -347,7 +347,7 @@ export default function CalculatorDetailPage() {
               </p>
               <pre className="rounded-lg bg-gray-900 text-green-400 p-4 text-xs overflow-x-auto">
 {`<div id="bergn-calculator"></div>
-<script src="${typeof window !== 'undefined' ? window.location.origin : 'https://app.bergn.dk'}/embed.js"
+<script src="${typeof window !== 'undefined' ? window.location.origin : 'https://bergn.dk'}/embed.js"
   data-tenant="${calc.tenant_id}"
   data-calculator="${calc.id}">
 </script>`}

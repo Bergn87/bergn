@@ -17,7 +17,7 @@
   }
 
   // Byg src URL
-  var base = s.getAttribute('data-url') || 'https://app.bergn.dk';
+  var base = s.getAttribute('data-url') || 'https://bergn.dk';
   var path = '/embed/' + tenant + (calculator ? '/' + calculator : '');
   var params = color ? '?color=' + encodeURIComponent(color) : '';
 

@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   const stripe = getStripe()
   const customerId = await getOrCreateStripeCustomer(tenant as Tenant)
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bergn.dk'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://bergn.dk'
 
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',

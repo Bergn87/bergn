@@ -33,7 +33,7 @@ function processTemplate(template: string, vars: TemplateVars): string {
  * Byg standard template-variable fra quote og tenant.
  */
 function buildTemplateVars(quote: Quote, tenant: Tenant): TemplateVars {
-  const quoteUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bergn.dk'}/q/${quote.quote_uuid}`
+  const quoteUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://bergn.dk'}/q/${quote.quote_uuid}`
 
   return {
     kunde_navn: quote.customer_name,

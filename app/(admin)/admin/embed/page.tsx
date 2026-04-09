@@ -49,7 +49,7 @@ export default function EmbedPage() {
     return <div className="flex items-center justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
   }
 
-  const appUrl = typeof window !== 'undefined' ? window.location.origin : 'https://app.bergn.dk'
+  const appUrl = typeof window !== 'undefined' ? window.location.origin : 'https://bergn.dk'
 
   return (
     <div className="space-y-6">

@@ -404,12 +404,12 @@ export default function OnboardingPage() {
                 <div className="relative">
                   <pre className="rounded-lg bg-gray-900 text-green-400 p-3 text-xs overflow-x-auto">
 {`<div id="bergn-calculator"></div>
-<script src="https://app.bergn.dk/embed.js"
+<script src="https://bergn.dk/embed.js"
   data-slug="${slug}">
 </script>`}
                   </pre>
                   <button type="button" className="absolute top-2 right-2 rounded bg-gray-700 px-2 py-1 text-xs text-white hover:bg-gray-600"
-                    onClick={() => { navigator.clipboard.writeText(`<div id="bergn-calculator"></div>\n<script src="https://app.bergn.dk/embed.js" data-slug="${slug}"></script>`); setCopied(true); setTimeout(() => setCopied(false), 2000) }}>
+                    onClick={() => { navigator.clipboard.writeText(`<div id="bergn-calculator"></div>\n<script src="https://bergn.dk/embed.js" data-slug="${slug}"></script>`); setCopied(true); setTimeout(() => setCopied(false), 2000) }}>
                     {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                   </button>
                 </div>
