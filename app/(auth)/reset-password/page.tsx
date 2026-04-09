@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,32 +17,45 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, CheckCircle2 } from 'lucide-react'
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('')
+export default function ResetPasswordPage() {
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
+
+    if (password.length < 8) {
+      setError('Adgangskoden skal være mindst 8 tegn')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      setError('Adgangskoderne matcher ikke')
+      return
+    }
+
     setIsLoading(true)
 
     try {
       const supabase = createClient()
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
-        email,
-        {
-          redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
-        }
-      )
+      const { error: updateError } = await supabase.auth.updateUser({
+        password,
+      })
 
-      if (resetError) {
-        setError('Der opstod en fejl. Prøv igen.')
+      if (updateError) {
+        setError(updateError.message)
         return
       }
 
       setSuccess(true)
+      setTimeout(() => {
+        router.push('/admin/dashboard')
+      }, 2000)
     } catch {
       setError('Der opstod en fejl. Prøv igen.')
     } finally {
@@ -57,16 +70,11 @@ export default function ForgotPasswordPage() {
           <div className="flex justify-center mb-2">
             <CheckCircle2 className="h-12 w-12 text-green-500" />
           </div>
-          <CardTitle className="text-2xl font-bold">Tjek din email</CardTitle>
+          <CardTitle className="text-2xl font-bold">Adgangskode opdateret</CardTitle>
           <CardDescription>
-            Vi har sendt et link til {email} hvor du kan nulstille din adgangskode.
+            Din adgangskode er blevet ændret. Du sendes videre til dit dashboard...
           </CardDescription>
         </CardHeader>
-        <CardFooter className="justify-center">
-          <Link href="/login" className="text-primary hover:underline text-sm">
-            Tilbage til login
-          </Link>
-        </CardFooter>
       </Card>
     )
   }
@@ -74,9 +82,9 @@ export default function ForgotPasswordPage() {
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Glemt adgangskode</CardTitle>
+        <CardTitle className="text-2xl font-bold">Ny adgangskode</CardTitle>
         <CardDescription>
-          Indtast din email, så sender vi et link til at nulstille din adgangskode
+          Vælg en ny adgangskode til din Bergn.dk konto
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
@@ -87,36 +95,41 @@ export default function ForgotPasswordPage() {
             </Alert>
           )}
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="password">Ny adgangskode</Label>
             <Input
-              id="email"
-              type="email"
-              placeholder="din@email.dk"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="password"
+              type="password"
+              placeholder="Mindst 8 tegn"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
-              autoComplete="email"
+              disabled={isLoading}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="confirm">Bekræft adgangskode</Label>
+            <Input
+              id="confirm"
+              type="password"
+              placeholder="Gentag adgangskode"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
               disabled={isLoading}
             />
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-4">
+        <CardFooter>
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Sender...
+                Opdaterer...
               </>
             ) : (
-              'Send nulstillingslink'
+              'Gem ny adgangskode'
             )}
           </Button>
-          <Link
-            href="/login"
-            className="text-sm text-muted-foreground hover:underline"
-          >
-            Tilbage til login
-          </Link>
         </CardFooter>
       </form>
     </Card>
